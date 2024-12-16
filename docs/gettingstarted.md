@@ -1,7 +1,6 @@
 ## Installation
 
-### 1. [Get from the Roblox Toolbox]("")
-### 2. [Download from Github]("")
+### [Get from the Roblox Toolbox]("https://create.roblox.com/store/asset/104280357701717") or [Download from Github]("https://github.com/J1ck/ProfileStoreWrapper/releases/tag/Release")
 
 ## Usage
 
