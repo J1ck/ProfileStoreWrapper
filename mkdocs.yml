@@ -1,0 +1,42 @@
+site_name: ProfileStoreWrapper Docs
+site_url: https://j1ck.github.io/ProfileStoreWrapper/
+repo_name: J1ck/ProfileStoreWrapper
+repo_url: https://github.com/J1ck/ProfileStoreWrapper
+
+nav:
+  - About: index.md
+  - Getting Started: gettingstarted.md
+  - API: api.md
+
+theme:
+  name: material
+  features:
+    - content.code.copy
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      primary: indigo
+      scheme: default
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      primary: indigo
+      scheme: slate
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to light mode
+
+plugins:
+  - search:
+      separator: '[\s\-\.]'
+
+markdown_extensions:
+  - admonition
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.details
+  - pymdownx.superfences

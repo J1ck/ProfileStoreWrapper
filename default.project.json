@@ -1,0 +1,10 @@
+{
+  "name": "ProfileStoreWrapper",
+  "tree": {
+    "$className": "DataModel",
+
+    "ReplicatedStorage": {
+      "$path": "src"
+    }
+  }
+}
