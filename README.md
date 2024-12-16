@@ -1,5 +1,3 @@
-# ProfileStoreWrapper
- 
 ## ProfileStore Wrapper focused on Client and Server Connectivity
 
 - **Minimal network usage** - Only replicates a diff so unchanging data isn't needlessly replicated.
