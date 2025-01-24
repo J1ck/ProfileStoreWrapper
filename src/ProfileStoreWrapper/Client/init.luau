@@ -84,14 +84,7 @@ function ProfileStoreWrapper.GetData() : MiscTable?
 end
 
 function ProfileStoreWrapper.ListenToValueChanged(DataPath : DataPath, Callback : (NewValue : any) -> ()) : DisconnectCallback?
-	local ProfileData = ProfileStoreWrapper.GetData()
-	
-	if ProfileData == nil then
-		-- imo this is better than erroring as that can affect a lot more than the local scope
-		-- id also rather this not yield
-		-- other alternative are promises but i dont need more dependancies
-		return nil
-	end
+	local ProfileData = ProfileStoreWrapper.GetDataAsync()
 
 	local Package : ChangedPackage = {
 		Callback = Callback,

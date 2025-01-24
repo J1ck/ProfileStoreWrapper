@@ -120,9 +120,11 @@ end
 
 local function FlushProfileUpdateQueue(Profile : Profile)
 	while #Profile._UpdateQueue > 0 do
-		local CallbackInQueue = table.remove(Profile._UpdateQueue, 1)
+		local CallbackInQueue = Profile._UpdateQueue[1]
 
 		UpdateProfileWithCallback(Profile, CallbackInQueue)
+
+		table.remove(Profile._UpdateQueue, 1)
 	end
 end
 
@@ -155,6 +157,8 @@ function ProfileStoreWrapper.StartSessionAsync(Player : Player)
 	Profile._UpdateQueue = {}
 	Profile._ChangedPackages = {}
 	
+	ReplicateDataChange(Profile, Profile.Data, {})
+
 	ActiveProfiles[Player] = Profile
 end
 
@@ -163,7 +167,7 @@ function ProfileStoreWrapper.EndSessionAsync(Player : Player)
 		return
 	end
 	
-	while #ActiveProfiles[Player]._UpdateQueue > 0 do
+	while ActiveProfiles[Player]._IsUpdating or #ActiveProfiles[Player]._UpdateQueue > 0 do
 		task.wait()
 	end
 	
