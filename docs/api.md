@@ -51,23 +51,28 @@ Get's the given ``LocalPlayer``'s ``Profile.Data``
 .ListenToValueChanged(
     DataPath : DataPath,
     Callback : (NewValue : any) -> ()
-) : DisconnectCallback?
+) : DisconnectCallback
 ```
 Listens to any data changed in the specified ``DataPath`` and will fire the given callback.
 This method also works for tables and will fire when anything inside the table is changed.
 Returns a function to disconnect the listener
 
 !!! warning
-    This method will return ``nil`` if the ``LocalPlayer``'s Profile hasn't loaded
+    This method will yield if the ``LocalPlayer``'s Profile hasn't been loaded yet
 
 **Example Usage**
 ``` luau linenums="1"
-local Disconnect = ProfileStoreWrapper.ListenToValueChanged({"Statistics", "DistanceTravelled"}, function(DistanceTravelled : number)
+local Disconnect = nil
+
+Disconnect = ProfileStoreWrapper.ListenToValueChanged({"Statistics", "DistanceTravelled"}, function(DistanceTravelled : number)
     Path.To.UI.Text = `Distance: {DistanceTravelled}`
 end)
 
+-- call to disconnect the listener
+Disconnect()
+
 -- listening to the whole Statistics table will also work
-ProfileStoreWrapper.ListenToValueChanged({"Statistics"}, function(Statistics)
+Disconnect = ProfileStoreWrapper.ListenToValueChanged({"Statistics"}, function(Statistics)
     Path.To.UI.Text = `Distance: {Statistics.DistanceTravelled}`
 end)
 ```
@@ -113,8 +118,10 @@ end)
 ```luau
 .EndSessionAsync(Player : Player)
 ```
-Ends the given ``Player``'s session and will subsequently kick them.
-This method will wait for the update queue to be completely flushed before ending the session
+Ends the given ``Player``'s session and will subsequently kick them
+
+!!! tip
+    This method will wait for the update queue to be completely flushed before ending the session
 
 **Example Usage**
 ```luau linenums="1"
@@ -212,7 +219,7 @@ This method also works for tables and will fire when anything inside the table i
 Returns a function to disconnect the listener
 
 !!! warning
-    This method will return ``nil`` if there is no Profile attached to the given ``Player``
+    This method will return ``nil`` if there is no Profile attached to the given ``Player``, including if the ``Player``'s Profile hasn't loaded yet
 
 **Example Usage**
 ```luau linenums="1"
@@ -221,7 +228,9 @@ local Players = game:GetService("Players")
 Players.PlayerAdded:Connect(function(Player : Player)
     ProfileStoreWrapper.StartSessionAsync(Player)
     
-    local Disconnect = ProfileStoreWrapper.ListenToValueChanged(Player, {"Statistics", "DistanceTravelled"}, function(DistanceTravelled : number)
+    local Disconnect = nil
+
+    Disconnect = ProfileStoreWrapper.ListenToValueChanged(Player, {"Statistics", "DistanceTravelled"}, function(DistanceTravelled : number)
         if DistanceTravelled > 100 then
             ProfileStoreWrapper.UpdateProfile(Player, function(Profile : ProfileStoreWrapper.Profile)
                 Profile.Data.Coins += 50
@@ -229,9 +238,12 @@ Players.PlayerAdded:Connect(function(Player : Player)
             end)
         end
     end)
+
+    -- call to disconnect the listener
+    Disconnect()
     
     -- listening to the whole Statistics table will also work
-    ProfileStoreWrapper.ListenToValueChanged(Player, {"Statistics"}, function(Statistics)
+    Disconnect = ProfileStoreWrapper.ListenToValueChanged(Player, {"Statistics"}, function(Statistics)
         if Statistics.DistanceTravelled > 100 then
             ProfileStoreWrapper.UpdateProfile(Player, function(Profile : ProfileStoreWrapper.Profile)
                 Profile.Data.Coins += 50
